@@ -3,7 +3,21 @@
 }
 
 .repoCardContent {
+  display: flex;
+  flex-flow: column nowrap;
+  row-gap: 12px;
+
   background-color: #ffffff;
   border-radius: 0 25px 25px 25px;
   padding: 30px 20px;
+}
+
+.repoCardName {
+  font-weight: bold;
+}
+
+.repoCardFooter {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }

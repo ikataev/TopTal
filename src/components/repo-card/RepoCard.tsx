@@ -10,13 +10,17 @@ type IProps = {
 const RepoCardComponent: FunctionComponent<IProps> = ({repo}) => {
   return (
     <div className={Style.repoCard}>
-      <div>{repo.avatar}</div>
-
       <div className={Style.repoCardContent}>
-        <div>{repo.name}</div>
-        <div>{repo.description}</div>
-        <div>{repo.stars}</div>
-        <div>{repo.issues}</div>
+        <div className={Style.repoCardName}>{repo.name}</div>
+
+        {repo.description && (
+          <div>{repo.description}</div>
+        )}
+
+        <div className={Style.repoCardFooter}>
+          <div>Stars: <b>{repo.stars}</b></div>
+          <div>Issues: <b>{repo.issues}</b></div>
+        </div>
       </div>
     </div>
   )

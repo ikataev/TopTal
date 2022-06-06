@@ -15,7 +15,7 @@ const UserCardComponent: FunctionComponent<IProps> = ({user}) => {
       </div>
 
       <div className={Style.nameAndEmailContainer}>
-        <div className={Style.userCardName}>{user.name}</div>
+        <div className={Style.userCardName}>{user.name || `GitHub doesn't provide name`}</div>
         <div>{user.email || `GitHub doesn't provide email`}</div>
       </div>
     </div>

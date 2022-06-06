@@ -27,26 +27,22 @@ const AppComponent: FunctionComponent = () => {
       requestUsers(searchValue),
       requestRepositories(searchValue)
     ]).then(([user, repositories]) => {
-      // console.log(user, repositories)
-
       setUser(user)
       setRepositories(sortRepositories(repositories, listMostStarred))
     })
   }, [listMostStarred, searchValue])
 
-  console.log('App render', listMostStarred)
-
   return (
     <div className={Style.layout}>
       <div className={Style.header}>
         <Checkbox checked={listMostStarred} label="List most starred repos only" onChanged={onCheckboxChangedHandler}/>
-        <Search onSearchChanged={onSearchChangedHandler}/>
+        <Search value={searchValue} onSearchChanged={onSearchChangedHandler}/>
         <UserCard user={user}/>
       </div>
 
       {repositories.length && (
         <div className={Style.content}>
-          <div>Listing {repositories.length} repositories from {user.name}</div>
+          <div className={Style.contentHeader}>Listing {repositories.length} repositories from {user.name}</div>
 
           <div className={Style.reposContainer}>
             {repositories.map(repo => <RepoCard repo={repo} key={repo.id}/>)}
