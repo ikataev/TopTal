@@ -1,37 +1,46 @@
 import * as React from "react";
 import { FunctionComponent, memo, useCallback, useEffect, useState } from "react";
 import { RepositoriesResponse, requestRepositories, requestUsers, UsersResponse } from "../utils/GitHubAPI";
+import { sortRepositories } from "../utils/sort";
 import * as Style from "./App.less";
-import { RepoCard } from "./RepoCard/RepoCard";
-import { Search } from "./Search";
-import { UserCard } from "./UserCard/UserCard";
+import { Checkbox } from "./checkbox/Checkbox";
+import { RepoCard } from "./repo-card/RepoCard";
+import { Search } from "./search/Search";
+import { UserCard } from "./user-card/UserCard";
 
 const AppComponent: FunctionComponent = () => {
   const [searchValue, setSearchValue] = useState('i')
+  const [listMostStarred, setListMostStarred] = useState(false)
   const [user, setUser] = useState<UsersResponse>({})
   const [repositories, setRepositories] = useState<RepositoriesResponse[]>([])
+
+  const onCheckboxChangedHandler = useCallback((checked: boolean) => {
+    setListMostStarred(checked)
+  }, [setListMostStarred])
+
+  const onSearchChangedHandler = useCallback((input: string) => {
+    setSearchValue(input)
+  }, [setSearchValue])
 
   useEffect(() => {
     Promise.all([
       requestUsers(searchValue),
       requestRepositories(searchValue)
     ]).then(([user, repositories]) => {
-      console.log(user, repositories)
+      // console.log(user, repositories)
 
       setUser(user)
-      setRepositories(repositories)
+      setRepositories(sortRepositories(repositories, listMostStarred))
     })
-  }, [searchValue])
+  }, [listMostStarred, searchValue])
 
-  const onSearchChangedHandler = useCallback((input: string) => {
-    setSearchValue(input)
-  }, [])
+  console.log('App render', listMostStarred)
 
   return (
     <div className={Style.layout}>
       <div className={Style.header}>
+        <Checkbox checked={listMostStarred} label="List most starred repos only" onChanged={onCheckboxChangedHandler}/>
         <Search onSearchChanged={onSearchChangedHandler}/>
-
         <UserCard user={user}/>
       </div>
 

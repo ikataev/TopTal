@@ -1,5 +1,5 @@
 import * as React from "react";
-import { FunctionComponent } from "react";
+import { FunctionComponent, memo } from "react";
 import { UsersResponse } from "../../utils/GitHubAPI";
 import * as Style from "./UserCard.less";
 
@@ -7,7 +7,7 @@ type IProps = {
   user: UsersResponse
 }
 
-export const UserCard: FunctionComponent<IProps> = ({user}) => {
+const UserCardComponent: FunctionComponent<IProps> = ({user}) => {
   return (
     <div className={Style.userCard}>
       <div className={Style.userCardPicture}>
@@ -16,8 +16,10 @@ export const UserCard: FunctionComponent<IProps> = ({user}) => {
 
       <div className={Style.nameAndEmailContainer}>
         <div className={Style.userCardName}>{user.name}</div>
-        <div className={Style.userCardEmail}>{user.email || `GitHub doesn't provide email`}</div>
+        <div>{user.email || `GitHub doesn't provide email`}</div>
       </div>
     </div>
   )
 }
+
+export const UserCard = memo(UserCardComponent)
