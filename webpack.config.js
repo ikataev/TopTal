@@ -1,12 +1,11 @@
 const path = require("path")
 const webpack = require("webpack")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
-const CopyWebpackPlugin = require("copy-webpack-plugin")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 
 module.exports = {
     mode: "development",
-    entry: "./src/index.ts",
+    entry: "./src/index.tsx",
     module: {
         rules: [
             {
@@ -41,10 +40,6 @@ module.exports = {
                 loader: "html-loader",
                 exclude: /node_modules/,
             },
-            {
-                test: /\.worker\.js$/,
-                use: {loader: "worker-loader"},
-            },
         ],
     },
     resolve: {
@@ -57,14 +52,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "MetaQuotes",
-        }),
-        new CopyWebpackPlugin({
-            patterns: [
-                {
-                    from: "data",
-                },
-            ],
+            template: "src/template.html"
         }),
         new MiniCssExtractPlugin({
             filename: "[name].[contenthash].css",
