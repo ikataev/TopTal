@@ -1,17 +1,17 @@
-import * as React from "react";
-import { FunctionComponent, memo } from "react";
-import { UsersResponse } from "../../utils/GitHubAPI";
-import * as Style from "./UserCard.less";
+import * as React from "react"
+import { FunctionComponent, memo } from "react"
+import { UsersResponse } from "../../utils/GitHubAPI"
+import * as Style from "./UserCard.less"
 
 type IProps = {
   user: UsersResponse
 }
 
-const UserCardComponent: FunctionComponent<IProps> = ({user}) => {
+const UserCardComponent: FunctionComponent<IProps> = ({ user }) => {
   return (
     <div className={Style.userCard}>
       <div className={Style.userCardPicture}>
-        <img src={user.avatar} alt="User's avatar"/>
+        <img src={user.avatar} alt="User's avatar" />
       </div>
 
       <div className={Style.nameAndEmailContainer}>

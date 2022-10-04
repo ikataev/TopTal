@@ -1,13 +1,13 @@
-import * as React from "react";
-import { ChangeEvent, memo, useState } from "react";
-import * as Style from "./Search.less";
+import * as React from "react"
+import { ChangeEvent, memo, useState } from "react"
+import * as Style from "./Search.less"
 
 type IProps = {
   value: string
   onSearchChanged: (input: string) => void
 }
 
-const SearchComponent: React.FunctionComponent<IProps> = ({value, onSearchChanged}) => {
+const SearchComponent: React.FunctionComponent<IProps> = ({ value, onSearchChanged }) => {
   const [timeoutId, setTimeoutId] = useState(0)
 
   const onChangeHandler = React.useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +22,8 @@ const SearchComponent: React.FunctionComponent<IProps> = ({value, onSearchChange
 
   return (
     <div>
-      <input type="search" placeholder="Search for a GitHub username" value={value} className={Style.search} onChange={onChangeHandler}/>
+      <input type="search" placeholder="Search for a GitHub username" value={value} className={Style.search}
+             onChange={onChangeHandler} />
     </div>
   )
 }

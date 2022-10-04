@@ -1,56 +1,56 @@
-import * as React from "react";
-import { FunctionComponent, memo, useCallback, useEffect, useState } from "react";
-import { RepositoriesResponse, requestRepositories, requestUsers, UsersResponse } from "../utils/GitHubAPI";
-import { sortRepositories } from "../utils/sort";
-import * as Style from "./App.less";
-import { Checkbox } from "./checkbox/Checkbox";
-import { RepoCard } from "./repo-card/RepoCard";
-import { Search } from "./search/Search";
-import { UserCard } from "./user-card/UserCard";
+import * as React from "react"
+import { FunctionComponent, memo, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { orderByStarsChanged, queryChanged } from "../store/github/githubSlice"
+import { RootState } from "../store/store"
+import * as Style from "./App.less"
+import { Checkbox } from "./checkbox/Checkbox"
+import { RepoCard } from "./repo-card/RepoCard"
+import { Search } from "./search/Search"
+import { UserCard } from "./user-card/UserCard"
 
 const AppComponent: FunctionComponent = () => {
-  const [searchValue, setSearchValue] = useState('i')
-  const [listMostStarred, setListMostStarred] = useState(false)
-  const [user, setUser] = useState<UsersResponse>({})
-  const [repositories, setRepositories] = useState<RepositoriesResponse[]>([])
+  const dispatch = useDispatch()
+  const query = useSelector((state: RootState) => state.github.query)
+  const orderByStars = useSelector((state: RootState) => state.github.orderByStars)
+
+  const user = useSelector((state: RootState) => state.github.user)
+  const repositories = useSelector((state: RootState) => state.github.repositories)
 
   const onCheckboxChangedHandler = useCallback((checked: boolean) => {
-    setListMostStarred(checked)
-  }, [setListMostStarred])
+    dispatch(orderByStarsChanged(checked))
+  }, [])
 
   const onSearchChangedHandler = useCallback((input: string) => {
-    setSearchValue(input)
-  }, [setSearchValue])
-
-  useEffect(() => {
-    Promise.all([
-      requestUsers(searchValue),
-      requestRepositories(searchValue)
-    ]).then(([user, repositories]) => {
-      setUser(user)
-      setRepositories(sortRepositories(repositories, listMostStarred))
-    })
-  }, [listMostStarred, searchValue])
+    dispatch(queryChanged(input))
+  }, [])
 
   return (
     <div className={Style.layout}>
       <div className={Style.header}>
-        <Checkbox checked={listMostStarred} label="List most starred repos only" onChanged={onCheckboxChangedHandler}/>
-        <Search value={searchValue} onSearchChanged={onSearchChangedHandler}/>
-        <UserCard user={user}/>
+        <Checkbox checked={orderByStars} label="List most starred repos only" onChanged={onCheckboxChangedHandler} />
+        <Search value={query} onSearchChanged={onSearchChangedHandler} />
+
+        {user ? (
+          <UserCard user={user} />
+        ) : (
+          <div>User idle...</div>
+        )}
       </div>
 
-      {repositories.length && (
+      {repositories && repositories.length ? (
         <div className={Style.content}>
           <div className={Style.contentHeader}>Listing {repositories.length} repositories from {user.name}</div>
 
           <div className={Style.reposContainer}>
-            {repositories.map(repo => <RepoCard repo={repo} key={repo.id}/>)}
+            {repositories.map(repo => <RepoCard repo={repo} key={repo.id} />)}
           </div>
         </div>
+      ) : (
+        <div>Repositories idle...</div>
       )}
     </div>
-  );
-};
+  )
+}
 
 export const App = memo(AppComponent)

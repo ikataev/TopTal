@@ -1,4 +1,4 @@
-import { RepositoriesResponse } from "./GitHubAPI";
+import { RepositoriesResponse } from "./GitHubAPI"
 
 export const sortRepositories = (repositories: RepositoriesResponse[], stars: boolean) => {
   if (!stars) {

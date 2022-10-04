@@ -1,13 +1,13 @@
-import * as React from "react";
-import { FunctionComponent, memo } from "react";
-import { RepositoriesResponse } from "../../utils/GitHubAPI";
-import * as Style from "./RepoCard.less";
+import * as React from "react"
+import { FunctionComponent, memo } from "react"
+import { RepositoriesResponse } from "../../utils/GitHubAPI"
+import * as Style from "./RepoCard.less"
 
 type IProps = {
   repo: RepositoriesResponse
 }
 
-const RepoCardComponent: FunctionComponent<IProps> = ({repo}) => {
+const RepoCardComponent: FunctionComponent<IProps> = ({ repo }) => {
   return (
     <div className={Style.repoCard}>
       <div className={Style.repoCardContent}>
